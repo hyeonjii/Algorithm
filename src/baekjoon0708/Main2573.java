@@ -1,4 +1,4 @@
-package baekjoon0705;
+package baekjoon0708;
 
 import java.util.Arrays;
 import java.util.LinkedList;
