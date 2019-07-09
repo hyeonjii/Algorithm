@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
-
+//빙산
 public class Main2573 {
 	static int n, m;
 	static int[] dx = {-1,1,0,0};
