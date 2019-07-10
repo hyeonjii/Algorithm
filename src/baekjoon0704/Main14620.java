@@ -8,6 +8,7 @@ public class Main14620 {
 	static boolean[][] visit;
 	static int[] dx = {-1,1,0,0};
 	static int[] dy = {0,0,-1,1};
+	
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		n = sc.nextInt();
@@ -31,24 +32,21 @@ public class Main14620 {
 			return;
 		}
 		
-		for (int i = x; i < map.length-1; i++) {
-			for (int j = 1; j < map.length-1; j++) {
+		for (int i = x; i < n-1; i++) {
+			for (int j = 1; j < n-1; j++) {
 				if(!visit[i][j]) {
-					sum = map[i][j];
-					for (int k = 0; k < dx.length; k++) {
-						int ni = i + dx[k];
-						int nj = j + dy[k];
-						if(visit[ni][nj]) {
-							break;
-						}
+					if (!check(i, j)) {
+						continue;
 					}
+					int c = map[i][j];
 					for (int k = 0; k < dx.length; k++) {
 						int ni = i + dx[k];
 						int nj = j + dy[k];
-						sum += map[ni][nj];
+						c += map[ni][nj];
 						visit[ni][nj] = true;
 					}
-					solve(idx+1, sum, x );
+					
+					solve(idx+1, sum+ c, x );
 					for (int k = 0; k < dx.length; k++) {
 						int ni = i + dx[k];
 						int nj = j + dy[k];
@@ -59,6 +57,16 @@ public class Main14620 {
 			}
 		}
 		
+	}
+	public static boolean check(int x, int y) {
+		for (int i = 0; i < dx.length; i++) {
+			int nx = x + dx[i];
+			int ny = y + dy[i];
+			if (visit[nx][ny]) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }
