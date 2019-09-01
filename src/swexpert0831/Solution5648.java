@@ -5,64 +5,71 @@ import java.util.Queue;
 import java.util.Scanner;
 
 public class Solution5648 {
-	static int dx[] = {0,0,1,-1};
-	static int dy[] = {-1,1,0,0};
+	static int dy[] = { 1,-1,0,0 };
+	static int dx[] = { 0,0,-1,1 };
 	static int[][] map= new int[4001][4001];
-	static int n, ans = 0;
-	static Queue<Point> q = new LinkedList<>();
+	static int ans;
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		int T = sc.nextInt();
 		for (int t = 1; t <= T; t++) {
-			n = sc.nextInt();
+			int n = sc.nextInt();
+			ans = 0;
+			Queue<Point> q = new LinkedList<>();
+			
 			for (int i = 0; i < n; i++) {
-				int y = sc.nextInt();
 				int x = sc.nextInt();
+				int y = sc.nextInt();
 				int div = sc.nextInt();
 				int k = sc.nextInt();
-				q.add(new Point((x+1000)*2, (y+1000)*2, div, k));
-//				System.out.println(((x+1000)*2) +" "+((y+1000)*2));
+				if(k==0) k=101;
+				q.add(new Point(2*y+2000,2*x+2000, div, k));
 			}
-			solve();
+			solve(q);
 			System.out.println("#"+t+" "+ans);
 		}
 	}
-	public static void solve() {
-		
+	public static void solve(Queue<Point> q) {
+		int cntz = 0;
 		while(!q.isEmpty()) {
 			Point p = q.poll();
 			
-			
-			if(map[p.x][p.y] > p.k) {
-				ans += p.k;
+			if(map[p.y][p.x] > p.k) {
+				if(p.k == 101) {
+					cntz++;
+				}
+				ans += map[p.y][p.x];
+				map[p.y][p.x] = 0;
 				continue;
 			}
-			map[p.x][p.y] = 0;
+			map[p.y][p.x] = 0;
 			
-			int nx = p.x + dx[p.div];
 			int ny = p.y + dy[p.div];
+			int nx = p.x + dx[p.div];
 			if(nx < 0|| ny < 0 || nx > 4000 || ny > 4000) {
 				continue;
 			}
-			if(map[nx][ny] == 0) {
-				map[nx][ny] += p.k;
-				q.add(new Point(nx, ny, p.div, p.k));				
+			if(map[ny][nx] == 0) {
+				q.add(new Point(ny, nx, p.div, p.k));				
 			}else {
-				map[nx][ny] += p.k;
-				ans += p.k;
+				if(p.k == 101) {
+					cntz++;
+				}
 			}
+			map[ny][nx] += p.k;
 		}
+		ans -= cntz*101;
+		
 	}
 
 	public static class Point {
-		int x;
 		int y;
+		int x;
 		int div;
 		int k;
-		public Point(int x, int y, int div, int k) {
-			super();
-			this.x = x;
+		public Point(int y, int x, int div, int k) {
 			this.y = y;
+			this.x = x;
 			this.div = div;
 			this.k = k;
 		}
